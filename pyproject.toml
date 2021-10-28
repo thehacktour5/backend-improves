@@ -8,6 +8,7 @@ authors = ["Fedorov <atiliogoulart@gmail.com>"]
 python = "^3.8"
 Flask = "^2.0.2"
 Flask-RESTful = "^0.3.9"
+pre-commit = "^2.15.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
