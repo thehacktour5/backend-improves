@@ -4,3 +4,6 @@ python:
 install:
   - pip install poetry
   - poetry install
+
+scripts:
+  - pytest
