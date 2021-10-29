@@ -1,32 +1,31 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Flask, request, abort
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 api = Api(app)
 
-alunos = {
-       "Atilio":{
-              "idade":25,
-              "gostosura":"lindo"
+users = [
+       {
+              'name':'Lindo',
+              'age':22
        },
-       "Hector":{
-              "idade":25,
-              "gostosura":"lindo"
+       {
+              'name':'Gostoso',
+              'age':56
        }
-}
+]
 
-class AlunosEndPoint(Resource):
+class AllUsers(Resource):
        def get(self):
-              return [alunos[key] for key in alunos.keys()]
+              return {'Users':[user for user in users]}, 200
 
-class AlunosGeralEndPoint(Resource):
-       def put(self, alunos_id):
-              alunos[alunos_id] = request.form['data']
-              return {alunos: alunos[alunos_id]}
 
-api.add_resource(AlunosEndPoint, '/')
-api.add_resource(AlunosGeralEndPoint, '/alunos/<string:alunos>/')
+class UserById(Resource):
+       def get(self, id):
+              return {'User':users[id]}, 200
 
+api.add_resource(AllUsers, '/')
+api.add_resource(UserById, '/<int:id>/')
 if __name__ == "__main__":
-       app.run()
+       app.run(debug=True)
