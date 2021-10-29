@@ -1,9 +1,8 @@
-from flask import Flask, request, abort
-from flask_restful import Resource, Api, reqparse
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-api = Api(app)
+
 
 users = [
        {
@@ -16,16 +15,20 @@ users = [
        }
 ]
 
-class AllUsers(Resource):
-       def get(self):
-              return {'Users':[user for user in users]}, 200
+@app.route('/')
+def AllUsers():
+       return jsonify(users)
 
+@app.route('/users', methods=['POST'])
+def AddUser():
+       user = request.get_json()
+       users.append(user)
+       return {'Usuarios': users}
 
-class UserById(Resource):
-       def get(self, id):
-              return {'User':users[id]}, 200
+@app.route('/users/<int:index>/', methods=['DELETE'])
+def DeleteUser(index):
+       users.pop(index)
+       return 'None',200
 
-api.add_resource(AllUsers, '/')
-api.add_resource(UserById, '/<int:id>/')
 if __name__ == "__main__":
        app.run(debug=True)
